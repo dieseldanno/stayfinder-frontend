@@ -1,5 +1,6 @@
-import type { Property } from "@/types/property";
+import type { NewProperty, Property } from "@/types/property";
 import type { ApiError } from "@/types/api";
+import { Booking, CreateBookingInput } from "@/types/booking";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -52,6 +53,78 @@ export async function getPropertyById(id: string): Promise<Property | null> {
     throw new Error("Failed to fetch property");
   }
   return response.json() as Promise<Property>;
+}
+
+export async function createProperty(input: NewProperty): Promise<Property> {
+  const response = await fetch(`${getApiBaseUrl()}/properties`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+  return response.json() as Promise<Property>;
+}
+
+export async function createBooking(
+  input: CreateBookingInput,
+): Promise<Booking> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+  return response.json() as Promise<Booking>;
+}
+
+export async function getBookings(propertyId: string): Promise<Booking[]> {
+  const response = await fetch(
+    `${getApiBaseUrl()}/bookings?property_id=${encodeURIComponent(propertyId)}`,
+    { credentials: "include", cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+
+  return response.json();
+}
+
+export async function updateBooking(
+  id: string,
+  input: CreateBookingInput,
+): Promise<Booking> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+
+  return response.json();
+}
+
+export async function deleteBooking(id: string): Promise<void> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
 }
 
 export async function readError(response: Response): Promise<string> {

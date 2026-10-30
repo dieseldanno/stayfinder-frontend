@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPropertyById } from "@/lib/api";
+import BookingSection from "@/app/components/BookingSection";
 
 type PropertyDetailsPageProps = {
   params: Promise<{ id: string }>;
@@ -24,6 +25,7 @@ export default async function PropertyDetailsPage({
       </p>
       <p>{property.price_per_night} kr / night</p>
       <p>Max guests: {property.max_guests}</p>
+      <BookingSection property={property} />
     </main>
   );
 }
