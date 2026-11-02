@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createProperty, updateProperty } from "@/lib/api";
+import { createProperty, updateProperty, deleteProperty } from "@/lib/api";
 import { useUser } from "@/context/UserContext";
 import type { Property } from "@/types/property";
 
@@ -10,7 +10,7 @@ type Props = {
   property?: Property;
 };
 
-export function PropertyForm() {
+export function PropertyForm({ property }: Props) {
   const router = useRouter();
   const { user, isLoading } = useUser();
   const isEdit = property !== undefined;
@@ -27,6 +27,7 @@ export function PropertyForm() {
   const [imageUrl, setImageUrl] = useState(property?.image_url ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,19 +57,45 @@ export function PropertyForm() {
     }
   }
 
+  async function handleDelete() {
+    if (!property) return;
+    if (!window.confirm(`Delete "${property.title}"? This cannot be undone.`)) {
+      return;
+    }
+
+    setError(null);
+    setIsDeleting(true);
+
+    try {
+      await deleteProperty(property.id);
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      setIsDeleting(false);
+    }
+  }
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
   if (!user) {
-    return <p>You must be logged in to create a property.</p>;
+    return <p>You must be logged in to manage properties.</p>;
   }
 
-  const inputClass = "rounded border px-3 py-2";
+  const inputClass =
+    "w-full rounded-md border border-gray-300 px-3 py-2 focus:border-black focus:outline-none focus:ring-1 focus:ring-black";
+  const labelClass = "mb-1 text-sm font-medium";
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-2xl space-y-6 rounded-lg border p-6 shadow-sm"
+    >
       <div className="flex flex-col">
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title" className={labelClass}>
+          Title
+        </label>
         <input
           id="title"
           value={title}
@@ -77,62 +104,83 @@ export function PropertyForm() {
           className={inputClass}
         />
       </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="flex flex-col">
+          <label htmlFor="city" className={labelClass}>
+            City
+          </label>
+          <input
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="country" className={labelClass}>
+            Country
+          </label>
+          <input
+            id="country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+            className={inputClass}
+          />
+        </div>
+      </div>
+
       <div className="flex flex-col">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description" className={labelClass}>
+          Description
+        </label>
         <textarea
           id="description"
+          rows={6}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
           className={inputClass}
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="city">City</label>
-        <input
-          id="city"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          required
-          className={inputClass}
-        />
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="flex flex-col">
+          <label htmlFor="price" className={labelClass}>
+            Price per night (kr)
+          </label>
+          <input
+            id="price"
+            type="number"
+            min={100}
+            value={pricePerNight}
+            onChange={(e) => setPricePerNight(e.target.value)}
+            required
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="guests" className={labelClass}>
+            Max guests
+          </label>
+          <input
+            id="guests"
+            type="number"
+            min={1}
+            value={maxGuests}
+            onChange={(e) => setMaxGuests(e.target.value)}
+            required
+            className={inputClass}
+          />
+        </div>
       </div>
+
       <div className="flex flex-col">
-        <label htmlFor="country">Country</label>
-        <input
-          id="country"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          required
-          className={inputClass}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="price">Price per night (kr)</label>
-        <input
-          id="price"
-          type="number"
-          min={100}
-          value={pricePerNight}
-          onChange={(e) => setPricePerNight(e.target.value)}
-          required
-          className={inputClass}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="guests">Max guests</label>
-        <input
-          id="guests"
-          type="number"
-          min={1}
-          value={maxGuests}
-          onChange={(e) => setMaxGuests(e.target.value)}
-          required
-          className={inputClass}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="image">Image URL (optional)</label>
+        <label htmlFor="image" className={labelClass}>
+          Image URL (optional)
+        </label>
         <input
           id="image"
           type="url"
@@ -147,14 +195,25 @@ export function PropertyForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded border px-4 py-2 disabled:opacity-50"
+        className="w-full rounded-md bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 disabled:opacity-50"
       >
         {isSubmitting
           ? "Saving..."
           : isEdit
             ? "Save changes"
-            : "Create Property"}
+            : "Create property"}
       </button>
+
+      {property && (
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isSubmitting || isDeleting}
+          className="w-full rounded-md border border-red-600 px-4 py-2 font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+        >
+          {isDeleting ? "Deleting..." : "Delete property"}
+        </button>
+      )}
     </form>
   );
 }

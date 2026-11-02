@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getPropertyById } from "@/lib/api";
 import BookingSection from "@/components/BookingSection";
 import Image from "next/image";
+import { EditPropertyButton } from "@/components/EditPropertyButton";
 
 type PropertyDetailsPageProps = {
   params: Promise<{ id: string }>;
@@ -18,7 +19,7 @@ export default async function PropertyDetailsPage({
   }
 
   return (
-    <main className="mx-auto max-w-3xl p-6">
+    <main className="mx-auto w-full max-w-2xl space-y-6 rounded-lg p-6 shadow-sm">
       {property.image_url ? (
         <div className="relative mb-6 aspect-video w-full overflow-hidden rounded">
           <Image
@@ -42,6 +43,7 @@ export default async function PropertyDetailsPage({
       </p>
       <p>{property.price_per_night} kr / night</p>
       <p>Max guests: {property.max_guests}</p>
+      <EditPropertyButton propertyId={property.id} />
       <BookingSection property={property} />
     </main>
   );

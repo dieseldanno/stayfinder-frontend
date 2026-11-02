@@ -87,6 +87,17 @@ export async function updateProperty(
   return response.json() as Promise<Property>;
 }
 
+export async function deleteProperty(id: string): Promise<void> {
+  const response = await fetch(`${getApiBaseUrl()}/properties/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+}
+
 export async function createBooking(
   input: CreateBookingInput,
 ): Promise<Booking> {
