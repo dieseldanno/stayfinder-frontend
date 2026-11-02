@@ -69,6 +69,24 @@ export async function createProperty(input: NewProperty): Promise<Property> {
   return response.json() as Promise<Property>;
 }
 
+export async function updateProperty(
+  id: string,
+  input: NewProperty,
+): Promise<Property> {
+  const response = await fetch(`${getApiBaseUrl()}/properties/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+
+  return response.json() as Promise<Property>;
+}
+
 export async function createBooking(
   input: CreateBookingInput,
 ): Promise<Booking> {

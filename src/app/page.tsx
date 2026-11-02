@@ -1,6 +1,6 @@
 import { getProperties, PropertyFilters } from "@/lib/api";
-import { PropertyCard } from "./components/PropertyCard";
-import PropertyFilterForm from "./components/PropertyFilterForm";
+import { PropertyCard } from "../components/PropertyCard";
+import PropertyFilterForm from "../components/PropertyFilterForm";
 
 type Props = {
   searchParams: Promise<Record<string, string | undefined>>;

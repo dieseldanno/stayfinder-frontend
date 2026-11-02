@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BookingForm } from "./BookingForm";
-import BookingList from "@/app/components/BookingList";
+import BookingList from "@/components/BookingList";
 import type { Property } from "@/types/property";
 
 export default function BookingSection({ property }: { property: Property }) {

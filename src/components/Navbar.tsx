@@ -23,6 +23,9 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {isLoading ? null : user ? (
             <>
+              <Link href="/properties/new" className="underline">
+                Add property
+              </Link>
               <span className="text-sm">{user.email}</span>
               <button onClick={handleLogout} className="underline">
                 Log out

@@ -2,19 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createProperty } from "@/lib/api";
+import { createProperty, updateProperty } from "@/lib/api";
 import { useUser } from "@/context/UserContext";
+import type { Property } from "@/types/property";
+
+type Props = {
+  property?: Property;
+};
 
 export function PropertyForm() {
   const router = useRouter();
   const { user, isLoading } = useUser();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [pricePerNight, setPricePerNight] = useState("");
-  const [maxGuests, setMaxGuests] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const isEdit = property !== undefined;
+  const [title, setTitle] = useState(property?.title ?? "");
+  const [description, setDescription] = useState(property?.description ?? "");
+  const [city, setCity] = useState(property?.city ?? "");
+  const [country, setCountry] = useState(property?.country ?? "");
+  const [pricePerNight, setPricePerNight] = useState(
+    property ? String(property.price_per_night) : "",
+  );
+  const [maxGuests, setMaxGuests] = useState(
+    property ? String(property.max_guests) : "",
+  );
+  const [imageUrl, setImageUrl] = useState(property?.image_url ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,17 +33,22 @@ export function PropertyForm() {
     setError(null);
     setIsSubmitting(true);
 
+    const input = {
+      title,
+      description,
+      city,
+      country,
+      price_per_night: Number(pricePerNight),
+      max_guests: Number(maxGuests),
+      image_url: imageUrl.trim() === "" ? null : imageUrl.trim(),
+    };
+
     try {
-      const property = await createProperty({
-        title,
-        description,
-        city,
-        country,
-        price_per_night: Number(pricePerNight),
-        max_guests: Number(maxGuests),
-        image_url: imageUrl.trim() === "" ? null : imageUrl.trim(),
-      });
-      router.push(`/properties/${property.id}`);
+      const saved = isEdit
+        ? await updateProperty(property.id, input)
+        : await createProperty(input);
+      router.push(`/properties/${saved.id}`);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -134,7 +149,11 @@ export function PropertyForm() {
         disabled={isSubmitting}
         className="rounded border px-4 py-2 disabled:opacity-50"
       >
-        {isSubmitting ? "Creating..." : "Create property"}
+        {isSubmitting
+          ? "Saving..."
+          : isEdit
+            ? "Save changes"
+            : "Create Property"}
       </button>
     </form>
   );
