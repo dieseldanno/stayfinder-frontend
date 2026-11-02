@@ -39,8 +39,11 @@ export function UserProvider({ children }: UserProviderProps) {
   }, []);
 
   useEffect(() => {
-    refreshUser();
-  }, [refreshUser]);
+    getCurrentUser()
+      .then(setUser)
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   async function logout() {
     try {
