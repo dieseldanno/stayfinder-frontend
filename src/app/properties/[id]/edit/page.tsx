@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getPropertyById } from "@/lib/api";
 import { PropertyForm } from "@/components/PropertyForm";
+import { getPropertyById } from "@/lib/api";
 
 type EditPropertyPageProps = {
   params: Promise<{ id: string }>;
@@ -17,8 +17,10 @@ export default async function EditPropertyPage({
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="mb-4 text-2xl font-bold">Edit property</h1>
+    <main className="mx-auto w-full max-w-2xl px-6 py-10">
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight">
+        Edit property
+      </h1>
       <PropertyForm property={property} />
     </main>
   );

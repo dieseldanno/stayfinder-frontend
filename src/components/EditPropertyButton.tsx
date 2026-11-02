@@ -11,7 +11,7 @@ export function EditPropertyButton({ propertyId }: { propertyId: string }) {
   return (
     <Link
       href={`/properties/${propertyId}/edit`}
-      className="mt-4 inline-block rounded border px-3 py-1"
+      className="btn-secondary mt-6"
     >
       Edit property
     </Link>

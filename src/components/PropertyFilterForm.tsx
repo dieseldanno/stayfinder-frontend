@@ -44,67 +44,71 @@ export default function PropertyFilterForm({ initial }: Props) {
     router.push("/");
   }
 
-  const inputClass = "rounded border px-3 py-2";
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-6 flex flex-wrap items-end gap-4"
+      className="card mb-8 flex flex-wrap items-end gap-4 p-4"
     >
-      <div className="flex flex-col">
-        <label htmlFor="city">City</label>
+      <div className="flex min-w-36 flex-1 flex-col">
+        <label htmlFor="city" className="label">
+          City
+        </label>
         <input
           id="city"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className={inputClass}
+          className="input"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="max-price">Max price / night</label>
+      <div className="flex min-w-36 flex-1 flex-col">
+        <label htmlFor="max-price" className="label">
+          Max price / night
+        </label>
         <input
           id="max-price"
           type="number"
           min={1}
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className={inputClass}
+          className="input"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="filter-guests">Guests</label>
+      <div className="flex min-w-36 flex-1 flex-col">
+        <label htmlFor="filter-guests" className="label">
+          Guests
+        </label>
         <input
           id="filter-guests"
           type="number"
           min={1}
           value={guests}
           onChange={(e) => setGuests(e.target.value)}
-          className={inputClass}
+          className="input"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="sort">Sort</label>
+      <div className="flex min-w-44 flex-1 flex-col">
+        <label htmlFor="sort" className="label">
+          Sort
+        </label>
         <select
           id="sort"
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className={inputClass}
+          className="input"
         >
           <option value="">Default</option>
           <option value="price-asc">Price: low to high</option>
           <option value="price-desc">Price: high to low</option>
         </select>
       </div>
-      <button type="submit" className="rounded border px-4 py-2">
-        Search
-      </button>
-      <button
-        type="button"
-        onClick={handleReset}
-        className="rounded border px-4 py-2"
-      >
-        Reset
-      </button>
+      <div className="flex gap-2">
+        <button type="submit" className="btn-primary">
+          Search
+        </button>
+        <button type="button" onClick={handleReset} className="btn-secondary">
+          Reset
+        </button>
+      </div>
     </form>
   );
 }

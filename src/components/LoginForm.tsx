@@ -42,9 +42,9 @@ export function LoginForm({ mode }: LoginFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm space-y-4">
+    <form onSubmit={handleSubmit} className="card space-y-4 p-6">
       <div className="flex flex-col">
-        <label htmlFor="email" className="mb-1">
+        <label htmlFor="email" className="label">
           Email
         </label>
         <input
@@ -54,12 +54,12 @@ export function LoginForm({ mode }: LoginFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="rounded border px-3 py-2"
+          className="input"
         />
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="password" className="mb-1">
+        <label htmlFor="password" className="label">
           Password
         </label>
         <input
@@ -70,17 +70,17 @@ export function LoginForm({ mode }: LoginFormProps) {
           required
           minLength={6}
           autoComplete={mode === "login" ? "current-password" : "new-password"}
-          className="rounded border px-3 py-2"
+          className="input"
         />
       </div>
 
-      {error && <p className="text-red-600">{error}</p>}
-      {message && <p className="text-green-700">{message}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      {message && <p className="text-sm text-green-700">{message}</p>}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded border px-4 py-2 disabled:opacity-50"
+        className="btn-primary w-full"
       >
         {isSubmitting
           ? "Please wait..."

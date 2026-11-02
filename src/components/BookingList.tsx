@@ -76,23 +76,25 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
   if (!user) return null;
 
   return (
-    <section className="mt-8">
-      <h2 className="mb-3 text-xl font-semibold">Bookings for this property</h2>
+    <section className="mt-10">
+      <h2 className="mb-4 text-xl font-semibold tracking-tight">
+        Bookings for this property
+      </h2>
 
-      {error && <p className="mb-3 text-red-600">{error}</p>}
+      {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
       {isLoading ? (
-        <p>Loading bookings...</p>
+        <p className="text-neutral-500">Loading bookings...</p>
       ) : bookings.length === 0 ? (
-        <p>No bookings yet.</p>
+        <p className="text-neutral-500">No bookings yet.</p>
       ) : (
         <ul className="space-y-3">
           {bookings.map((booking) => (
-            <li key={booking.id} className="rounded border p-4">
+            <li key={booking.id} className="card p-4">
               {editingId === booking.id && draft ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <input
-                    className="w-full rounded border p-2"
+                    className="input"
                     value={draft.guest_name}
                     onChange={(e) =>
                       setDraft({ ...draft, guest_name: e.target.value })
@@ -100,16 +102,16 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
                   />
                   <input
                     type="email"
-                    className="w-full rounded border p-2"
+                    className="input"
                     value={draft.guest_email}
                     onChange={(e) =>
                       setDraft({ ...draft, guest_email: e.target.value })
                     }
                   />
-                  <div className="flex gap-2">
+                  <div className="grid gap-3 sm:grid-cols-2">
                     <input
                       type="date"
-                      className="w-full rounded border p-2"
+                      className="input"
                       value={draft.check_in}
                       onChange={(e) =>
                         setDraft({ ...draft, check_in: e.target.value })
@@ -117,7 +119,7 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
                     />
                     <input
                       type="date"
-                      className="w-full rounded border p-2"
+                      className="input"
                       value={draft.check_out}
                       onChange={(e) =>
                         setDraft({ ...draft, check_out: e.target.value })
@@ -127,7 +129,7 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
                   <input
                     type="number"
                     min={1}
-                    className="w-full rounded border p-2"
+                    className="input"
                     value={draft.guests}
                     onChange={(e) =>
                       setDraft({ ...draft, guests: Number(e.target.value) })
@@ -136,26 +138,23 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleSave(booking.id)}
-                      className="rounded bg-black px-3 py-1 text-white"
+                      className="btn-primary"
                     >
                       Save
                     </button>
-                    <button
-                      onClick={cancelEdit}
-                      className="rounded border px-3 py-1"
-                    >
+                    <button onClick={cancelEdit} className="btn-secondary">
                       Cancel
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <p className="font-medium">{booking.guest_name}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-neutral-500">
                       {booking.guest_email}
                     </p>
-                    <p className="text-sm">
+                    <p className="mt-1 text-sm text-neutral-600">
                       {booking.check_in} → {booking.check_out} ·{" "}
                       {booking.guests} guests · {booking.status}
                     </p>
@@ -163,13 +162,13 @@ export default function BookingList({ propertyId, refreshKey }: Props) {
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEdit(booking)}
-                      className="rounded border px-3 py-1"
+                      className="btn-secondary px-3 py-1"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(booking.id)}
-                      className="rounded border border-red-600 px-3 py-1 text-red-600"
+                      className="btn-danger px-3 py-1"
                     >
                       Delete
                     </button>

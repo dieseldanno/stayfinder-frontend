@@ -21,8 +21,8 @@ Backend måste köra och tillåta `http://localhost:3001` som CORS-origin.
 
 ## Struktur
 
-- `src/app/` sidor (start, `properties/[id]`, `properties/new`, `login`, `register`) samt `loading.tsx`, `error.tsx`, `not-found.tsx`
-- `src/components/` formulär och listor (`BookingForm`, `BookingList`, `PropertyFilterForm`, `Navbar` m.fl.)
+- `src/app/` sidor (start, `properties/[id]`, `properties/[id]/edit`, `properties/new`, `login`, `register`) samt `loading.tsx`, `error.tsx`, `not-found.tsx`
+- `src/components/` formulär och listor (`BookingForm`, `BookingList`, `PropertyForm` (skapa och ändra), `PropertyFilterForm`, `Navbar` m.fl.)
 - `src/context/UserContext.tsx` inloggad användare via React Context
 - `src/lib/` API-anrop (`api.ts`, `auth.ts`)
 - `src/types/` typer för boenden, bokningar, auth och API-fel

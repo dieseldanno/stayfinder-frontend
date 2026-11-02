@@ -77,23 +77,20 @@ export function PropertyForm({ property }: Props) {
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p className="text-neutral-500">Loading...</p>;
   }
   if (!user) {
-    return <p>You must be logged in to manage properties.</p>;
+    return (
+      <p className="text-neutral-500">
+        You must be logged in to manage properties.
+      </p>
+    );
   }
 
-  const inputClass =
-    "w-full rounded-md border border-gray-300 px-3 py-2 focus:border-black focus:outline-none focus:ring-1 focus:ring-black";
-  const labelClass = "mb-1 text-sm font-medium";
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-2xl space-y-6 rounded-lg border p-6 shadow-sm"
-    >
+    <form onSubmit={handleSubmit} className="card w-full space-y-6 p-6">
       <div className="flex flex-col">
-        <label htmlFor="title" className={labelClass}>
+        <label htmlFor="title" className="label">
           Title
         </label>
         <input
@@ -101,13 +98,13 @@ export function PropertyForm({ property }: Props) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className={inputClass}
+          className="input"
         />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="flex flex-col">
-          <label htmlFor="city" className={labelClass}>
+          <label htmlFor="city" className="label">
             City
           </label>
           <input
@@ -115,11 +112,11 @@ export function PropertyForm({ property }: Props) {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
-            className={inputClass}
+            className="input"
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="country" className={labelClass}>
+          <label htmlFor="country" className="label">
             Country
           </label>
           <input
@@ -127,13 +124,13 @@ export function PropertyForm({ property }: Props) {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             required
-            className={inputClass}
+            className="input"
           />
         </div>
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="description" className={labelClass}>
+        <label htmlFor="description" className="label">
           Description
         </label>
         <textarea
@@ -142,13 +139,13 @@ export function PropertyForm({ property }: Props) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          className={inputClass}
+          className="input"
         />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="flex flex-col">
-          <label htmlFor="price" className={labelClass}>
+          <label htmlFor="price" className="label">
             Price per night (kr)
           </label>
           <input
@@ -158,11 +155,11 @@ export function PropertyForm({ property }: Props) {
             value={pricePerNight}
             onChange={(e) => setPricePerNight(e.target.value)}
             required
-            className={inputClass}
+            className="input"
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="guests" className={labelClass}>
+          <label htmlFor="guests" className="label">
             Max guests
           </label>
           <input
@@ -172,13 +169,13 @@ export function PropertyForm({ property }: Props) {
             value={maxGuests}
             onChange={(e) => setMaxGuests(e.target.value)}
             required
-            className={inputClass}
+            className="input"
           />
         </div>
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="image" className={labelClass}>
+        <label htmlFor="image" className="label">
           Image URL (optional)
         </label>
         <input
@@ -186,34 +183,36 @@ export function PropertyForm({ property }: Props) {
           type="url"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          className={inputClass}
+          className="input"
         />
       </div>
 
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-md bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-      >
-        {isSubmitting
-          ? "Saving..."
-          : isEdit
-            ? "Save changes"
-            : "Create property"}
-      </button>
-
-      {property && (
+      <div className="space-y-3">
         <button
-          type="button"
-          onClick={handleDelete}
+          type="submit"
           disabled={isSubmitting || isDeleting}
-          className="w-full rounded-md border border-red-600 px-4 py-2 font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+          className="btn-primary w-full"
         >
-          {isDeleting ? "Deleting..." : "Delete property"}
+          {isSubmitting
+            ? "Saving..."
+            : isEdit
+              ? "Save changes"
+              : "Create property"}
         </button>
-      )}
+
+        {property && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isSubmitting || isDeleting}
+            className="btn-danger w-full"
+          >
+            {isDeleting ? "Deleting..." : "Delete property"}
+          </button>
+        )}
+      </div>
     </form>
   );
 }

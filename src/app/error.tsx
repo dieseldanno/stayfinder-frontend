@@ -7,10 +7,12 @@ type ErrorPageProps = {
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
-    <main className="mx-auto max-w-3xl p-6">
-      <h1 className="text-2xl font-bold">Something went wrong</h1>
-      <p className="mt-2">{error.message}</p>
-      <button onClick={reset} className="mt-4 rounded border px-4 py-2">
+    <main className="mx-auto w-full max-w-2xl px-6 py-10">
+      <h1 className="text-3xl font-semibold tracking-tight">
+        Something went wrong
+      </h1>
+      <p className="mt-2 text-neutral-500">{error.message}</p>
+      <button onClick={reset} className="btn-primary mt-6">
         Try again
       </button>
     </main>

@@ -22,8 +22,8 @@ export default async function Home({ searchParams }: Props) {
   const sortValue = params.sort === "price" ? `price-${filters.order}` : "";
 
   return (
-    <main className="mx-auto max-w-5xl p-6">
-      <h1 className="mb-4 text-2xl font-bold">Properties</h1>
+    <main className="mx-auto w-full max-w-5xl px-6 py-10">
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight">Properties</h1>
 
       <PropertyFilterForm
         initial={{
@@ -35,9 +35,9 @@ export default async function Home({ searchParams }: Props) {
       />
 
       {properties.length === 0 ? (
-        <p>No properties match your search.</p>
+        <p className="text-neutral-500">No properties match your search.</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {properties.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}

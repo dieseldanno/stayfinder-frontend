@@ -14,27 +14,31 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b">
-      <div className="mx-auto flex max-w-3xl items-center justify-between p-4">
-        <Link href="/" className="font-bold">
+    <nav className="sticky top-0 z-10 border-b border-neutral-200 bg-white/80 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+        <Link href="/" className="text-lg font-semibold tracking-tight">
           StayFinder
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 text-sm">
           {isLoading ? null : user ? (
             <>
-              <Link href="/properties/new" className="underline">
+              <Link href="/properties/new" className="btn-primary">
                 Add property
               </Link>
-              <span className="text-sm">{user.email}</span>
-              <button onClick={handleLogout} className="underline">
+              <span className="text-neutral-400">{user.email}</span>
+              <button onClick={handleLogout} className="btn-secondary">
                 Log out
               </button>
             </>
           ) : (
             <>
-              <Link href="/login">Log in</Link>
-              <Link href="/register">Sign up</Link>
+              <Link href="/login" className="btn-primary">
+                Log in
+              </Link>
+              <Link href="/register" className="btn-primary">
+                Sign up
+              </Link>
             </>
           )}
         </div>

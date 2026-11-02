@@ -68,71 +68,90 @@ export function BookingForm({ property, onCreated }: Props) {
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p className="mt-8 text-neutral-500">Loading...</p>;
   }
 
   if (!user) {
     return (
-      <p className="mt-6">
-        <Link href="/login" className="underline">
-          Log in
-        </Link>{" "}
-        to book this property.
-      </p>
+      <div className="card mt-8 p-6">
+        <p className="text-neutral-600">
+          <Link
+            href="/login"
+            className="font-medium text-neutral-900 underline"
+          >
+            Log in
+          </Link>{" "}
+          to book this property.
+        </p>
+      </div>
     );
   }
 
-  const inputClass = "rounded border px-3 py-2";
-
   return (
-    <form onSubmit={handleSubmit} className="mt-6 max-w-md space-y-4">
-      <h2 className="text-xl font-semibold">Book this property</h2>
+    <form onSubmit={handleSubmit} className="card mt-8 space-y-4 p-6">
+      <h2 className="text-xl font-semibold tracking-tight">
+        Book this property
+      </h2>
 
       <div className="flex flex-col">
-        <label htmlFor="guest-name">Your name</label>
+        <label htmlFor="guest-name" className="label">
+          Your name
+        </label>
         <input
           id="guest-name"
           value={guestName}
           onChange={(e) => setGuestName(e.target.value)}
           required
-          className={inputClass}
+          className="input"
         />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="guest-email">Your email</label>
+        <label htmlFor="guest-email" className="label">
+          Your email
+        </label>
         <input
           id="guest-email"
           type="email"
           value={guestEmail}
           onChange={(e) => setGuestEmail(e.target.value)}
           required
-          className={inputClass}
+          className="input"
         />
       </div>
-      <div className="flex flex-col">
-        <label htmlFor="check-in">Check-in</label>
-        <input
-          id="check-in"
-          type="date"
-          value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
-          required
-          className={inputClass}
-        />
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="flex flex-col">
+          <label htmlFor="check-in" className="label">
+            Check-in
+          </label>
+          <input
+            id="check-in"
+            type="date"
+            value={checkIn}
+            onChange={(e) => setCheckIn(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="check-out" className="label">
+            Check-out
+          </label>
+          <input
+            id="check-out"
+            type="date"
+            value={checkOut}
+            onChange={(e) => setCheckOut(e.target.value)}
+            required
+            className="input"
+          />
+        </div>
       </div>
+
       <div className="flex flex-col">
-        <label htmlFor="check-out">Check-out</label>
-        <input
-          id="check-out"
-          type="date"
-          value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
-          required
-          className={inputClass}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="guests">Guests (max {property.max_guests})</label>
+        <label htmlFor="guests" className="label">
+          Guests (max {property.max_guests})
+        </label>
         <input
           id="guests"
           type="number"
@@ -141,24 +160,24 @@ export function BookingForm({ property, onCreated }: Props) {
           value={guests}
           onChange={(e) => setGuests(e.target.value)}
           required
-          className={inputClass}
+          className="input"
         />
       </div>
 
       {nights > 0 && (
-        <p>
+        <p className="rounded-lg bg-neutral-100 px-3 py-2 text-sm">
           {nights} {nights === 1 ? "night" : "nights"} ×{" "}
           {property.price_per_night} kr = <strong>{totalPrice} kr</strong>
         </p>
       )}
 
-      {error && <p className="text-red-600">{error}</p>}
-      {success && <p className="text-green-700">{success}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      {success && <p className="text-sm text-green-700">{success}</p>}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded border px-4 py-2 disabled:opacity-50"
+        className="btn-primary w-full"
       >
         {isSubmitting ? "Booking..." : "Book"}
       </button>

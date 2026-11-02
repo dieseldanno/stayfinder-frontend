@@ -19,30 +19,40 @@ export default async function PropertyDetailsPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl space-y-6 rounded-lg p-6 shadow-sm">
+    <main className="mx-auto w-full max-w-2xl px-6 py-10">
       {property.image_url ? (
-        <div className="relative mb-6 aspect-video w-full overflow-hidden rounded">
+        <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-2xl">
           <Image
             src={property.image_url}
             alt={property.title}
             fill
             priority
-            sizes="(min-width: 1024px) 896px, 100vw"
+            sizes="(min-width: 1024px) 672px, 100vw"
             className="object-cover"
           />
         </div>
       ) : (
-        <div className="flex aspect-4/3 w-full items-center justify-center bg-gray-100 text-gray-400">
+        <div className="mb-6 flex aspect-video w-full items-center justify-center rounded-2xl bg-neutral-100 text-neutral-400">
           No image
         </div>
       )}
-      <h1 className="text-2xl font-bold">{property.title}</h1>
-      <p className="mt-2">{property.description}</p>
-      <p className="mt-2">
+
+      <h1 className="text-3xl font-semibold tracking-tight">
+        {property.title}
+      </h1>
+      <p className="mt-1 text-neutral-500">
         {property.city}, {property.country}
       </p>
-      <p>{property.price_per_night} kr / night</p>
-      <p>Max guests: {property.max_guests}</p>
+      <p className="mt-4 leading-relaxed text-neutral-700">
+        {property.description}
+      </p>
+      <p className="mt-4 font-medium">
+        {property.price_per_night} kr{" "}
+        <span className="font-normal text-neutral-500">
+          / night · max {property.max_guests} guests
+        </span>
+      </p>
+
       <EditPropertyButton propertyId={property.id} />
       <BookingSection property={property} />
     </main>

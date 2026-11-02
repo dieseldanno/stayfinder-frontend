@@ -8,7 +8,7 @@ type PropertyCardProps = {
 
 export function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <article className="rounded border p-4">
+    <article className="card overflow-hidden">
       {property.image_url ? (
         <div className="relative aspect-4/3 w-full">
           <Image
@@ -20,21 +20,27 @@ export function PropertyCard({ property }: PropertyCardProps) {
           />
         </div>
       ) : (
-        <div className="flex aspect-4/3 w-full items-center justify-center bg-gray-100 text-gray-400">
+        <div className="flex aspect-4/3 w-full items-center justify-center bg-neutral-100 text-neutral-400">
           No image
         </div>
       )}
-      <h2 className="font-semibold">{property.title}</h2>
-      <p>
-        {property.city}, {property.country}
-      </p>
-      <p>{property.price_per_night} kr / natt</p>
-      <Link
-        href={`/properties/${property.id}`}
-        className="mt-2 inline-block underline"
-      >
-        Se detaljer
-      </Link>
+
+      <div className="p-4">
+        <h2 className="font-semibold">{property.title}</h2>
+        <p className="text-sm text-neutral-500">
+          {property.city}, {property.country}
+        </p>
+        <p className="mt-3 font-medium">
+          {property.price_per_night} kr{" "}
+          <span className="text-sm font-normal text-neutral-500">/ natt</span>
+        </p>
+        <Link
+          href={`/properties/${property.id}`}
+          className="btn-secondary mt-4 w-full"
+        >
+          See details
+        </Link>
+      </div>
     </article>
   );
 }
